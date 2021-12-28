@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_navigation"
+    app:startDestination="@id/mainScreenFragment">
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.example.agggro.main.MainScreenFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainScreenFragment_to_regionFragment"
+            app:destination="@id/regionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/regionFragment"
+        android:name="com.example.agggro.region.RegionFragment"
+        android:label="RegionFragment" >
+        <argument
+            android:name="placeId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_regionFragment_to_cityFragment"
+            app:destination="@id/cityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityFragment"
+        android:name="com.example.agggro.city.CityFragment"
+        android:label="CityFragment" >
+        <argument
+            android:name="placeId"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>
