@@ -9,8 +9,9 @@ class RegionViewModel(
     lifecycleScope: LifecycleCoroutineScope,
     owner: LifecycleOwner,
     val navigateToCity: (String) -> Unit,
-    val deleteCard: (String) -> Unit
+    val deleteCard: (String) -> Unit,
+    val editCard: (String) -> Unit
 ):BaseViewModel() {
     val popularCityAdapter = MainScreenAdapter ({ name -> navigateToCity(name) },
-        {name -> deleteCard(name)})
+        {name -> deleteCard(name)},{name -> editCard(name)})
 }

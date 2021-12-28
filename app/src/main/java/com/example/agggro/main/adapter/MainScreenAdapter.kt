@@ -7,10 +7,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agggro.api.PlaceData
 import com.example.agggro.databinding.CardItemBinding
+import android.R
+
+import android.view.View
+
+
+
 
 class MainScreenAdapter(
     val navigateToRegion: (String) -> Unit,
-    val deleteCard: (String) -> Unit
+    val deleteCard: (String) -> Unit,
+    val editCard: (String) ->Unit
 ) : ListAdapter<PlaceData, MainScreenAdapter.VH>(MainScreenDiffUtilsCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -37,6 +44,11 @@ class MainScreenAdapter(
             binding.id.text = "id: ${popularCity.id.toString()}"
             binding.ibDelete.setOnClickListener {
                 deleteCard.invoke(popularCity.id ?: "0")
+            }
+
+            binding.ibEdit.setOnClickListener {
+                editCard.invoke(popularCity.id ?: "0")
+
             }
 
             binding.root.setOnClickListener {

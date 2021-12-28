@@ -11,11 +11,13 @@ class MainScreenVM(
     lifecycleScope: LifecycleCoroutineScope,
     owner: LifecycleOwner,
     val navigateToCity: (String) -> Unit,
-    val deleteCard: (String) -> Unit
+    val deleteCard: (String) -> Unit,
+    val editCard: (String) -> Unit
 ) : BaseViewModel() {
 
-    val popularCityAdapter = MainScreenAdapter ({ name -> navigateToCity(name)},
-                                                {name -> deleteCard(name)})
+    val popularCityAdapter = MainScreenAdapter({ name -> navigateToCity(name) },
+        { name -> deleteCard(name) },
+        { name -> editCard(name) })
 
     fun getHhData(): List<PlaceData> = runBlocking {
         getData()

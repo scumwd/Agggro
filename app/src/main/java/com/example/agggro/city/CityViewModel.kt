@@ -4,7 +4,8 @@ import com.example.agggro.core.BaseViewModel
 import com.example.agggro.main.adapter.MainScreenAdapter
 
 class CityViewModel(
-    var deleteCard: (String)-> Unit
+    var deleteCard: (String)-> Unit,
+    var editCard: (String) -> Unit
 ):BaseViewModel() {
-    val popularCityAdapter = MainScreenAdapter ({},{name->deleteCard(name)})
+    val popularCityAdapter = MainScreenAdapter ({},{name->deleteCard(name)},{name ->editCard(name)})
 }

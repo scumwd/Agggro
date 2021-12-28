@@ -15,6 +15,11 @@ import com.example.agggro.api.PlaceData
 import com.example.agggro.core.BaseFragment
 import com.example.agggro.data.PlaceDbHelper
 import com.example.agggro.databinding.FragmentMainBinding
+import android.app.AlertDialog
+
+import android.widget.EditText
+import android.content.DialogInterface
+
 
 class MainScreenFragment : BaseFragment<MainScreenVM>() {
 
@@ -29,7 +34,8 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
             lifecycleScope,
             this,
             { name -> navigateToRegion(name) },
-            {name->deleteCard(name)})
+            { name -> deleteCard(name) },
+            {name->editCard(name)})
         mDbHelper = PlaceDbHelper(requireContext())
         db = try {
             mDbHelper.writableDatabase;
@@ -66,13 +72,45 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
         addAllPlace(data)
     }
 
-    fun loadData(){
+    fun loadData() {
         val dataList = mDbHelper.getAllCountry(db)
         viewModel.popularCityAdapter.submitList(dataList)
     }
 
-    fun deleteCard(placeId: String){
-        mDbHelper.deletePlace(placeId,db)
+    fun editCard(placeId: String) {
+        val li = LayoutInflater.from(context)
+        val promptsView: View = li.inflate(R.layout.dialog, null)
+        val mDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+        mDialogBuilder.setView(promptsView)
+
+        //Настраиваем отображение поля для ввода текста в открытом диалоге:
+        val userInput = promptsView.findViewById<View>(R.id.input_text) as EditText
+
+        mDialogBuilder
+            .setCancelable(false)
+            .setPositiveButton(
+                "OK"
+            ) { dialog, id -> //Вводим текст и отображаем в строке ввода на основном экране:
+                mDbHelper.updatePlace(
+                    PlaceData(
+                        placeId,
+                        null,
+                        userInput.text.toString(),
+                        emptyList()
+                    ), db
+                )
+                loadData()
+            }
+            .setNegativeButton(
+                "Отмена"
+            ) { dialog, id -> dialog.cancel() }
+        val alertDialog = mDialogBuilder.create()
+        alertDialog.show()
+    }
+
+    fun deleteCard(placeId: String) {
+        mDbHelper.deletePlace(placeId, db)
         loadData()
     }
 
