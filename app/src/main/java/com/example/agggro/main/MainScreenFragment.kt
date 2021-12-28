@@ -52,18 +52,12 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
         binding.apply {
             rvCityList.adapter = viewModel.popularCityAdapter
         }
+        loadData()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var dataList = listOf<PlaceData>()
-        while (!dataIsLoad) {
-            dataList = mDbHelper.getAllCountry(db)
-            if (dataList.isEmpty()) loadApiData()
-            else dataIsLoad = true
-        }
-        viewModel.popularCityAdapter.submitList(dataList)
         binding.progressBar.isVisible = false
     }
 
@@ -73,7 +67,13 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
     }
 
     fun loadData() {
-        val dataList = mDbHelper.getAllCountry(db)
+        var dataIsLoad = false
+        var dataList = listOf<PlaceData>()
+        while (!dataIsLoad) {
+            dataList = mDbHelper.getAllCountry(db)
+            if (dataList.isEmpty()) loadApiData()
+            else dataIsLoad = true
+        }
         viewModel.popularCityAdapter.submitList(dataList)
     }
 
