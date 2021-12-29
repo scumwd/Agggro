@@ -2,21 +2,14 @@ package com.example.agggro.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.agggro.api.PlaceData
 import com.example.agggro.databinding.CardItemBinding
-import android.R
-
-import android.view.View
-
-
-
 
 class MainScreenAdapter(
     val navigateToRegion: (String) -> Unit,
-    val deleteCard: (String) -> Unit,
+    val deleteCard: (PlaceData) -> Unit,
     val editCard: (String) ->Unit
 ) : ListAdapter<PlaceData, MainScreenAdapter.VH>(MainScreenDiffUtilsCallback) {
 
@@ -29,31 +22,30 @@ class MainScreenAdapter(
         getItem(position)?.let { holder.bind(it) }
     }
 
-
-
     inner class VH(private val binding: CardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(popularCity: PlaceData) {
-            binding.name.text = popularCity.name
-            if (popularCity.count!=0){
-                binding.count.text="Объектов: ${popularCity.count.toString()}"
+        fun bind(placeData: PlaceData) {
+
+            binding.name.text = placeData.name
+            if (placeData.count!=0){
+                binding.count.text="Объектов: ${placeData.count.toString()}"
             }
             else
                 binding.count.text="Город"
-            binding.id.text = "id: ${popularCity.id.toString()}"
+            binding.id.text = "id: ${placeData.id.toString()}"
+
             binding.ibDelete.setOnClickListener {
-                deleteCard.invoke(popularCity.id ?: "0")
+                deleteCard.invoke(placeData)
             }
 
             binding.ibEdit.setOnClickListener {
-                editCard.invoke(popularCity.id ?: "0")
-
+                editCard.invoke(placeData.id ?: "0")
             }
 
             binding.root.setOnClickListener {
-                if (popularCity.count!=0){
-                    navigateToRegion.invoke(popularCity.id ?: "0")
+                if (placeData.count!=0){
+                    navigateToRegion.invoke(placeData.id ?: "0")
                 }
             }
         }

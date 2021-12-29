@@ -53,8 +53,8 @@ class RegionFragment : BaseFragment<RegionViewModel>() {
         return binding.root
     }
 
-    fun deleteCard(placeId: String){
-        mDbHelper.deletePlace(placeId,db)
+    fun deleteCard(placeData: PlaceData) {
+        mDbHelper.deletePlace(placeData, db)
         loadData()
     }
     fun loadData(){

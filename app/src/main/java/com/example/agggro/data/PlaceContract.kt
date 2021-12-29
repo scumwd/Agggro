@@ -4,7 +4,6 @@ import android.provider.BaseColumns
 
 class PlaceContract private constructor() {
     object PlaceEntry : BaseColumns {
-
         const val TABLE_NAME = "place"
         const val _ID = BaseColumns._ID
         const val COLUMN_NAME = "name"

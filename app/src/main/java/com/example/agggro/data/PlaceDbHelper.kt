@@ -34,7 +34,6 @@ class PlaceDbHelper(context: Context) :
             put(_ID, place.id)
             put(COLUMN_COUNT,place.areas.size)
         }
-
         db.insertWithOnConflict(TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE)
     }
 
@@ -96,11 +95,23 @@ class PlaceDbHelper(context: Context) :
         db.update(TABLE_NAME, updatedValues, updateCondition, null)
     }
 
-    fun deletePlace(id: String, db: SQLiteDatabase) {
-        val deleteCondition = "$_ID = $id"
+    fun deletePlace(place: PlaceData, db: SQLiteDatabase) {
+        val deleteCondition = "$_ID = ${place.id}"
+        updateCount(place,db)
         db.delete(TABLE_NAME, deleteCondition, null)
     }
 
+    fun updateCount(place: PlaceData,db: SQLiteDatabase){
+        if (place.parentId!= null){
+            val updateCondition = "$_ID = ${place.parentId}"
+            val updatedValues = ContentValues()
+            val placeParent: PlaceData? = getPlaceById(place.parentId!!,db)
+            if (placeParent != null) {
+                updatedValues.put(COLUMN_COUNT, placeParent.count-1)
+            }
+            db.update(TABLE_NAME, updatedValues, updateCondition, null)
+        }
+    }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 

@@ -9,6 +9,4 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
 
     val Fragment.navigationController
         get() = NavHostFragment.findNavController(this)
-
-
 }

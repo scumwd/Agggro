@@ -26,7 +26,6 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
     lateinit var mDbHelper: PlaceDbHelper
     lateinit var db: SQLiteDatabase
     lateinit var binding: FragmentMainBinding
-    var dataIsLoad = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,7 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
             lifecycleScope,
             this,
             { name -> navigateToRegion(name) },
-            { name -> deleteCard(name) },
+            { name -> deleteCard(name)},
             {name->editCard(name)})
         mDbHelper = PlaceDbHelper(requireContext())
         db = try {
@@ -48,17 +47,14 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater)
-        binding.apply {
-            rvCityList.adapter = viewModel.popularCityAdapter
-        }
         loadData()
-        return binding.root
-    }
+        binding = FragmentMainBinding.inflate(inflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.progressBar.isVisible = false
+        binding.apply {
+            rvCountryList.adapter = viewModel.popularCityAdapter
+        }
+
+        return binding.root
     }
 
     fun loadApiData() {
@@ -109,8 +105,8 @@ class MainScreenFragment : BaseFragment<MainScreenVM>() {
         alertDialog.show()
     }
 
-    fun deleteCard(placeId: String) {
-        mDbHelper.deletePlace(placeId, db)
+    fun deleteCard(placeData: PlaceData) {
+        mDbHelper.deletePlace(placeData, db)
         loadData()
     }
 

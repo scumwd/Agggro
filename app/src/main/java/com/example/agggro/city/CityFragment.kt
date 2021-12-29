@@ -83,9 +83,8 @@ class CityFragment:BaseFragment<CityViewModel>() {
         alertDialog.show()
     }
 
-    fun deleteCard(placeId: String){
-        mDbHelper.deletePlace(placeId,db)
+    fun deleteCard(placeData: PlaceData) {
+        mDbHelper.deletePlace(placeData, db)
         loadData()
     }
-
 }

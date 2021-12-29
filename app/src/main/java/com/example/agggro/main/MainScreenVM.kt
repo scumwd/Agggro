@@ -11,7 +11,7 @@ class MainScreenVM(
     lifecycleScope: LifecycleCoroutineScope,
     owner: LifecycleOwner,
     val navigateToCity: (String) -> Unit,
-    val deleteCard: (String) -> Unit,
+    val deleteCard: (PlaceData) -> Unit,
     val editCard: (String) -> Unit
 ) : BaseViewModel() {
 
